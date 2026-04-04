@@ -1,0 +1,120 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Панель контроля";
+}
+
+<section class="hero">
+    <div>
+        <p class="eyebrow">Безопасный контур дипломного проекта</p>
+        <h1>Панель управления этичным тестированием на проникновение</h1>
+        <p class="hero-text">
+            Веб-MVP на `ASP.NET Core` для учета разрешений, scope, активов и находок.
+            Он закрывает ключевой управленческий и отчетный функционал без наступательных модулей.
+        </p>
+    </div>
+    <div class="hero-panel">
+        <div class="hero-stat">
+            <span class="hero-stat-value">@Model.Metrics.EngagementsTotal</span>
+            <span class="hero-stat-label">контуров проверки</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-value">@Model.Metrics.AssetsTotal</span>
+            <span class="hero-stat-label">активов в учете</span>
+        </div>
+        <div class="hero-stat hero-stat-alert">
+            <span class="hero-stat-value">@Model.Metrics.PriorityFindings</span>
+            <span class="hero-stat-label">high/critical находок</span>
+        </div>
+    </div>
+</section>
+
+<section class="metrics-grid">
+    <article class="metric-card">
+        <span class="metric-label">Активные находки</span>
+        <strong>@Model.Metrics.ActiveFindings</strong>
+        <p>Все замечания, которые еще не переведены в `Resolved`.</p>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Контуры проверки</span>
+        <strong>@Model.Metrics.EngagementsTotal</strong>
+        <p>Отдельные проекты с собственным scope и клиентом.</p>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Активы</span>
+        <strong>@Model.Metrics.AssetsTotal</strong>
+        <p>Системы и сервисы, включенные в согласованный перечень.</p>
+    </article>
+    <article class="metric-card accent-card">
+        <span class="metric-label">Приоритетные риски</span>
+        <strong>@Model.Metrics.PriorityFindings</strong>
+        <p>Фокус для итогового отчета и дорожной карты устранения.</p>
+    </article>
+</section>
+
+<section class="panel-grid">
+    <article class="surface-card">
+        <div class="section-head">
+            <h2>Последние контуры проверки</h2>
+            <a asp-page="/Engagements/Index">Смотреть все</a>
+        </div>
+        @if (Model.RecentEngagements.Count > 0)
+        {
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Контур</th>
+                            <th>Клиент</th>
+                            <th>Статус</th>
+                            <th>Период</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.RecentEngagements)
+                    {
+                        <tr>
+                            <td><a asp-page="/Engagements/Details" asp-route-id="@item.Id">@item.Name</a></td>
+                            <td>@item.ClientName</td>
+                            <td><span class="status-pill status-@item.Status.ToLowerInvariant()">@item.Status</span></td>
+                            <td>@(item.StartDate?.ToString("dd.MM.yyyy") ?? "не задан") - @(item.EndDate?.ToString("dd.MM.yyyy") ?? "не задан")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="empty-state">Контуров проверки пока нет.</p>
+        }
+    </article>
+
+    <article class="surface-card">
+        <div class="section-head">
+            <h2>Свежие находки</h2>
+            <a asp-page="/Engagements/Create">Создать контур</a>
+        </div>
+        @if (Model.RecentFindings.Count > 0)
+        {
+            <div class="finding-list">
+            @foreach (var item in Model.RecentFindings)
+            {
+                <div class="finding-card">
+                    <div class="finding-topline">
+                        <span class="severity-pill severity-@item.Severity.ToLowerInvariant()">@item.Severity</span>
+                        <span class="status-pill status-@item.Status.ToLowerInvariant()">@item.Status</span>
+                    </div>
+                    <h3>@item.Title</h3>
+                    <p>@item.EngagementName</p>
+                    <small>@(item.AssetName ?? "Актив не указан")</small>
+                </div>
+            }
+            </div>
+        }
+        else
+        {
+            <p class="empty-state">Находок пока нет.</p>
+        }
+    </article>
+</section>

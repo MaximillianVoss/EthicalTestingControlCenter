@@ -1,0 +1,52 @@
+@page
+@model EthicalTestingControlCenter.Web.Pages.Engagements.IndexModel
+@{
+    ViewData["Title"] = "Контуры проверки";
+}
+
+<section class="section-intro">
+    <div>
+        <p class="eyebrow">Основная сущность проекта</p>
+        <h1>Контуры проверки</h1>
+        <p>Каждый контур хранит формальное разрешение, scope, активы и зарегистрированные находки.</p>
+    </div>
+    <a class="cta-button" asp-page="/Engagements/Create">Добавить контур</a>
+</section>
+
+<article class="surface-card">
+    @if (Model.Items.Count > 0)
+    {
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Клиент</th>
+                        <th>Статус</th>
+                        <th>Активы</th>
+                        <th>Находки</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.ClientName</td>
+                        <td><span class="status-pill status-@item.Status.ToLowerInvariant()">@item.Status</span></td>
+                        <td>@item.AssetsCount</td>
+                        <td>@item.FindingsCount</td>
+                        <td><a asp-page="/Engagements/Details" asp-route-id="@item.Id">Открыть</a></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="empty-state">Пока нет ни одного контура проверки.</p>
+    }
+</article>
+

@@ -1,0 +1,127 @@
+@page "{id:int}"
+@model EthicalTestingControlCenter.Web.Pages.Engagements.DetailsModel
+@{
+    ViewData["Title"] = Model.Engagement.Name;
+}
+
+<section class="section-intro">
+    <div>
+        <p class="eyebrow">@Model.Engagement.ClientName</p>
+        <h1>@Model.Engagement.Name</h1>
+        <p>@Model.Engagement.Objective</p>
+    </div>
+    <div class="intro-actions">
+        <a class="ghost-button" asp-page="/Engagements/Report" asp-route-id="@Model.Engagement.Id">Открыть отчет</a>
+        <span class="status-pill status-@Model.Engagement.Status.ToLowerInvariant()">@Model.Engagement.Status</span>
+    </div>
+</section>
+
+<section class="metrics-grid">
+@foreach (var item in Model.ComplianceChecks)
+{
+    <article class="metric-card compliance-card @(item.IsOk ? "compliance-ok" : "compliance-attention")">
+        <span class="metric-label">@item.Title</span>
+        <strong>@(item.IsOk ? "OK" : "Check")</strong>
+        <p>@item.Text</p>
+    </article>
+}
+</section>
+
+<section class="panel-grid">
+    <article class="surface-card">
+        <div class="section-head">
+            <h2>Scope</h2>
+            <span class="micro-note">Authorization: @(Model.Engagement.AuthorizationCode ?? "не задан")</span>
+        </div>
+        <p>@Model.Engagement.ScopeDescription</p>
+        <div class="meta-grid">
+            <div>
+                <span class="micro-label">Старт</span>
+                <strong>@(Model.Engagement.StartDate?.ToString("dd.MM.yyyy") ?? "не задан")</strong>
+            </div>
+            <div>
+                <span class="micro-label">Завершение</span>
+                <strong>@(Model.Engagement.EndDate?.ToString("dd.MM.yyyy") ?? "не задан")</strong>
+            </div>
+        </div>
+    </article>
+
+    <article class="surface-card">
+        <div class="section-head">
+            <h2>Быстрые действия</h2>
+        </div>
+        <div class="action-stack">
+            <a class="cta-button" asp-page="/Engagements/AddAsset" asp-route-id="@Model.Engagement.Id">Добавить актив</a>
+            <a class="ghost-button" asp-page="/Engagements/AddFinding" asp-route-id="@Model.Engagement.Id">Добавить находку</a>
+        </div>
+    </article>
+</section>
+
+<section class="panel-grid">
+    <article class="surface-card">
+        <div class="section-head">
+            <h2>Активы</h2>
+            <a asp-page="/Engagements/AddAsset" asp-route-id="@Model.Engagement.Id">Новый актив</a>
+        </div>
+        @if (Model.Assets.Count > 0)
+        {
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Актив</th>
+                            <th>Тип</th>
+                            <th>IP / Host</th>
+                            <th>Критичность</th>
+                            <th>Владелец</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var asset in Model.Assets)
+                    {
+                        <tr>
+                            <td>@asset.AssetName</td>
+                            <td>@asset.AssetType</td>
+                            <td>@(asset.IpAddress ?? "не указан")</td>
+                            <td><span class="severity-pill severity-@asset.Criticality.ToLowerInvariant()">@asset.Criticality</span></td>
+                            <td>@(asset.OwnerName ?? "не задан")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="empty-state">Активы еще не добавлены.</p>
+        }
+    </article>
+
+    <article class="surface-card">
+        <div class="section-head">
+            <h2>Находки</h2>
+            <a asp-page="/Engagements/AddFinding" asp-route-id="@Model.Engagement.Id">Новая находка</a>
+        </div>
+        @if (Model.Findings.Count > 0)
+        {
+            <div class="finding-list">
+            @foreach (var finding in Model.Findings)
+            {
+                <div class="finding-card">
+                    <div class="finding-topline">
+                        <span class="severity-pill severity-@finding.Severity.ToLowerInvariant()">@finding.Severity</span>
+                        <span class="status-pill status-@finding.Status.ToLowerInvariant()">@finding.Status</span>
+                    </div>
+                    <h3>@finding.Title</h3>
+                    <p>@finding.Category@(string.IsNullOrWhiteSpace(finding.AssetName) ? string.Empty : $" · {finding.AssetName}")</p>
+                    <small>@finding.Recommendation</small>
+                </div>
+            }
+            </div>
+        }
+        else
+        {
+            <p class="empty-state">Находок пока нет.</p>
+        }
+    </article>
+</section>

@@ -1,0 +1,109 @@
+@page "{id:int}/report"
+@model EthicalTestingControlCenter.Web.Pages.Engagements.ReportModel
+@{
+    ViewData["Title"] = $"Отчет · {Model.Engagement.Name}";
+}
+
+<section class="section-intro">
+    <div>
+        <p class="eyebrow">Сводный отчет</p>
+        <h1>@Model.Engagement.Name</h1>
+        <p>@Model.Engagement.ClientName · @Model.Engagement.Objective</p>
+    </div>
+    <a class="ghost-button" asp-page="/Engagements/Details" asp-route-id="@Model.Engagement.Id">Назад к контуру</a>
+</section>
+
+<section class="metrics-grid">
+@foreach (var item in Model.SeveritySummaries)
+{
+    <article class="metric-card">
+        <span class="metric-label">@item.Name</span>
+        <strong>@item.Count</strong>
+        <p>зарегистрированных находок этого уровня.</p>
+    </article>
+}
+    <article class="metric-card accent-card">
+        <span class="metric-label">Открытые замечания</span>
+        <strong>@Model.OpenFindings.Count</strong>
+        <p>попадают в план устранения и контроль повторной проверки.</p>
+    </article>
+</section>
+
+<section class="panel-grid">
+    <article class="surface-card">
+        <div class="section-head">
+            <h2>Паспорт проверки</h2>
+        </div>
+        <div class="report-facts">
+            <div>
+                <span class="micro-label">Authorization</span>
+                <strong>@(Model.Engagement.AuthorizationCode ?? "не задан")</strong>
+            </div>
+            <div>
+                <span class="micro-label">Период</span>
+                <strong>@(Model.Engagement.StartDate?.ToString("dd.MM.yyyy") ?? "не задан") - @(Model.Engagement.EndDate?.ToString("dd.MM.yyyy") ?? "не задан")</strong>
+            </div>
+            <div class="report-wide">
+                <span class="micro-label">Scope</span>
+                <strong>@Model.Engagement.ScopeDescription</strong>
+            </div>
+        </div>
+    </article>
+
+    <article class="surface-card">
+        <div class="section-head">
+            <h2>Ключевые рекомендации</h2>
+        </div>
+        @if (Model.OpenFindings.Count > 0)
+        {
+            <ol class="report-list">
+            @foreach (var item in Model.OpenFindings)
+            {
+                <li>@item.Recommendation</li>
+            }
+            </ol>
+        }
+        else
+        {
+            <p class="empty-state">Открытых рекомендаций нет.</p>
+        }
+    </article>
+</section>
+
+<article class="surface-card">
+    <div class="section-head">
+        <h2>Открытые находки</h2>
+    </div>
+    @if (Model.OpenFindings.Count > 0)
+    {
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Находка</th>
+                        <th>Категория</th>
+                        <th>Severity</th>
+                        <th>Статус</th>
+                        <th>Рекомендация</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.OpenFindings)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Category</td>
+                        <td><span class="severity-pill severity-@item.Severity.ToLowerInvariant()">@item.Severity</span></td>
+                        <td><span class="status-pill status-@item.Status.ToLowerInvariant()">@item.Status</span></td>
+                        <td>@item.Recommendation</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="empty-state">Незакрытых находок нет.</p>
+    }
+</article>

@@ -1,0 +1,66 @@
+@page "{id:int}/findings/create"
+@model EthicalTestingControlCenter.Web.Pages.Engagements.AddFindingModel
+@{
+    ViewData["Title"] = "Новая находка";
+}
+
+<section class="section-intro">
+    <div>
+        <p class="eyebrow">@Model.Engagement.Name</p>
+        <h1>Зарегистрировать находку</h1>
+        <p>Описывай проблему и рекомендацию в безопасной форме, без инструкций по злоупотреблению.</p>
+    </div>
+</section>
+
+<form method="post" class="surface-card form-grid">
+    <div asp-validation-summary="ModelOnly" class="validation-summary full-width"></div>
+
+    <label>
+        Название *
+        <input asp-for="Input.Title" />
+        <span asp-validation-for="Input.Title" class="field-error"></span>
+    </label>
+    <label>
+        Категория *
+        <input asp-for="Input.Category" />
+        <span asp-validation-for="Input.Category" class="field-error"></span>
+    </label>
+    <label>
+        Severity *
+        <select asp-for="Input.Severity">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+        </select>
+    </label>
+    <label>
+        Статус *
+        <select asp-for="Input.Status">
+            <option value="Open">Open</option>
+            <option value="InReview">InReview</option>
+            <option value="Resolved">Resolved</option>
+        </select>
+    </label>
+    <label class="full-width">
+        Актив
+        <input asp-for="Input.AssetName" placeholder="Portal.Auth" />
+        <span asp-validation-for="Input.AssetName" class="field-error"></span>
+    </label>
+    <label class="full-width">
+        Доказательная база
+        <textarea asp-for="Input.Evidence" rows="4"></textarea>
+        <span asp-validation-for="Input.Evidence" class="field-error"></span>
+    </label>
+    <label class="full-width">
+        Рекомендация *
+        <textarea asp-for="Input.Recommendation" rows="5"></textarea>
+        <span asp-validation-for="Input.Recommendation" class="field-error"></span>
+    </label>
+
+    <div class="full-width action-row">
+        <a class="ghost-button" asp-page="/Engagements/Details" asp-route-id="@Model.Engagement.Id">Назад</a>
+        <button class="cta-button" type="submit">Сохранить находку</button>
+    </div>
+</form>
+

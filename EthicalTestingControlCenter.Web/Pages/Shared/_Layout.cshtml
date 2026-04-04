@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] is string title ? $"{title} - Ethical Testing Control Center" : "Ethical Testing Control Center")</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/EthicalTestingControlCenter.Web.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" asp-page="/Index">
+                <span class="brand-kicker">Diploma MVP</span>
+                <span class="brand-title">Ethical Testing Control Center</span>
+            </a>
+            <nav class="topnav">
+                <a asp-page="/Index">Панель</a>
+                <a asp-page="/Engagements/Index">Контуры проверки</a>
+                <a class="nav-button" asp-page="/Engagements/Create">Новый контур</a>
+            </nav>
+        </header>
+
+        @if (TempData["FlashMessage"] is string message)
+        {
+            var flashType = TempData["FlashType"] as string ?? "success";
+            <section class="flash-stack">
+                <div class="flash flash-@flashType">@message</div>
+            </section>
+        }
+
+        <main class="content">
+            @RenderBody()
+        </main>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

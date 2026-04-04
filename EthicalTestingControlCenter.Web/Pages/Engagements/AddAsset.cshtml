@@ -1,0 +1,58 @@
+@page "{id:int}/assets/create"
+@model EthicalTestingControlCenter.Web.Pages.Engagements.AddAssetModel
+@{
+    ViewData["Title"] = "Новый актив";
+}
+
+<section class="section-intro">
+    <div>
+        <p class="eyebrow">@Model.Engagement.Name</p>
+        <h1>Добавить актив</h1>
+        <p>Фиксируй только согласованные системы, которые входят в scope.</p>
+    </div>
+</section>
+
+<form method="post" class="surface-card form-grid">
+    <div asp-validation-summary="ModelOnly" class="validation-summary full-width"></div>
+
+    <label>
+        Название актива *
+        <input asp-for="Input.AssetName" />
+        <span asp-validation-for="Input.AssetName" class="field-error"></span>
+    </label>
+    <label>
+        Тип актива *
+        <input asp-for="Input.AssetType" />
+        <span asp-validation-for="Input.AssetType" class="field-error"></span>
+    </label>
+    <label>
+        IP / Host
+        <input asp-for="Input.IpAddress" placeholder="10.10.10.5" />
+        <span asp-validation-for="Input.IpAddress" class="field-error"></span>
+    </label>
+    <label>
+        Критичность *
+        <select asp-for="Input.Criticality">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+        </select>
+    </label>
+    <label>
+        Владелец
+        <input asp-for="Input.OwnerName" />
+        <span asp-validation-for="Input.OwnerName" class="field-error"></span>
+    </label>
+    <label class="full-width">
+        Примечания
+        <textarea asp-for="Input.Notes" rows="4"></textarea>
+        <span asp-validation-for="Input.Notes" class="field-error"></span>
+    </label>
+
+    <div class="full-width action-row">
+        <a class="ghost-button" asp-page="/Engagements/Details" asp-route-id="@Model.Engagement.Id">Назад</a>
+        <button class="cta-button" type="submit">Добавить актив</button>
+    </div>
+</form>
+

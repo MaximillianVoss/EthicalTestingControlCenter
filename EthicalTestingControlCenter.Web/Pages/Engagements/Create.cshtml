@@ -1,0 +1,66 @@
+@page
+@model EthicalTestingControlCenter.Web.Pages.Engagements.CreateModel
+@{
+    ViewData["Title"] = "Новый контур";
+}
+
+<section class="section-intro">
+    <div>
+        <p class="eyebrow">Новая запись</p>
+        <h1>Создать контур проверки</h1>
+        <p>Фиксируй клиента, цель, авторизацию и границы работ до начала проектной реализации.</p>
+    </div>
+</section>
+
+<form method="post" class="surface-card form-grid">
+    <div asp-validation-summary="ModelOnly" class="validation-summary full-width"></div>
+
+    <label>
+        Название контура *
+        <input asp-for="Input.Name" />
+        <span asp-validation-for="Input.Name" class="field-error"></span>
+    </label>
+    <label>
+        Клиент *
+        <input asp-for="Input.ClientName" />
+        <span asp-validation-for="Input.ClientName" class="field-error"></span>
+    </label>
+    <label class="full-width">
+        Цель проверки *
+        <textarea asp-for="Input.Objective" rows="3"></textarea>
+        <span asp-validation-for="Input.Objective" class="field-error"></span>
+    </label>
+    <label>
+        Код авторизации
+        <input asp-for="Input.AuthorizationCode" placeholder="AUTH-2026-001" />
+        <span asp-validation-for="Input.AuthorizationCode" class="field-error"></span>
+    </label>
+    <label>
+        Статус
+        <select asp-for="Input.Status">
+            <option value="Planned">Planned</option>
+            <option value="InProgress">InProgress</option>
+            <option value="Review">Review</option>
+            <option value="Closed">Closed</option>
+        </select>
+    </label>
+    <label>
+        Дата начала
+        <input asp-for="Input.StartDate" type="date" />
+    </label>
+    <label>
+        Дата завершения
+        <input asp-for="Input.EndDate" type="date" />
+    </label>
+    <label class="full-width">
+        Scope и ограничения *
+        <textarea asp-for="Input.ScopeDescription" rows="5"></textarea>
+        <span asp-validation-for="Input.ScopeDescription" class="field-error"></span>
+    </label>
+
+    <div class="full-width action-row">
+        <a class="ghost-button" asp-page="/Engagements/Index">Отмена</a>
+        <button class="cta-button" type="submit">Сохранить контур</button>
+    </div>
+</form>
+
