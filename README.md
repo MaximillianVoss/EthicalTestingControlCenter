@@ -1,5 +1,22 @@
 # Diploma Project MVP
 
+<!-- codex-repo-note:start -->
+## Справка о репозитории / Repository note
+
+**RU:** центр управления сценариями этичного тестирования безопасности.
+
+**EN:** a control center for ethical security-testing scenarios.
+
+**Статус / Status:** активный проект 2026 года; ожидает рефакторинга и переименования. / active 2026 project; refactoring and repository rename are pending.
+
+**Текущее имя / Current name:** `EthicalTestingControlCenter`
+
+**Плановое имя / Planned name:** `ethical-testing-control-center`
+
+**Topics:** `cleanup-pending`, `ethical-testing`, `html`, `needs-rename`, `needs-review`, `security`, `status-active`, `type-tool`
+<!-- codex-repo-note:end -->
+
+
 Основная реализация для дипломного проекта теперь собрана на `C# / ASP.NET Core`.
 
 Рекомендуемый для защиты и дальнейшего развития проект:
